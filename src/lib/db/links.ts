@@ -10,12 +10,14 @@ const GENERIC_ERROR = "Something went wrong. Please try again.";
 export const SLUG_TAKEN_ERROR = "That slug is already taken.";
 
 function isUniqueViolation(error: unknown): boolean {
-  return (
-    typeof error === "object" &&
-    error !== null &&
-    "code" in error &&
-    error.code === "23505"
-  );
+  let current: unknown = error;
+
+  while (typeof current === "object" && current !== null) {
+    if ("code" in current && current.code === "23505") return true;
+    current = "cause" in current ? current.cause : null;
+  }
+
+  return false;
 }
 
 export type DailyClicks = { date: string; count: number };
