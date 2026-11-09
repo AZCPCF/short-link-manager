@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 import { FormField } from "@/components/form-field";
 import { Button } from "@/components/ui/button";
-import { createLinkAction } from "@/lib/actions/links";
+import { createLinkAction } from "@/features/links/actions";
 import { useManualSubmit } from "@/lib/form/use-manual-submit";
 
 export function CreateLinkForm({ onSuccess }: { onSuccess: () => void }) {

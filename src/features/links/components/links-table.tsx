@@ -1,7 +1,7 @@
 import NextLink from "next/link";
 
-import { CopyLinkButton } from "@/components/links/copy-link-button";
-import { DeleteLinkButton } from "@/components/links/delete-link-button";
+import { CopyLinkButton } from "@/features/links/components/copy-link-button";
+import { DeleteLinkButton } from "@/features/links/components/delete-link-button";
 import {
   Table,
   TableBody,

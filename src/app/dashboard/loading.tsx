@@ -1,4 +1,4 @@
-import { LinksListSkeleton } from "@/components/links/links-list-skeleton";
+import { LinksListSkeleton } from "@/features/links/components/links-list-skeleton";
 
 export default function DashboardLoading() {
   return <LinksListSkeleton />;

@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
-import { ClicksChart } from "@/components/links/clicks-chart";
-import { CopyLinkButton } from "@/components/links/copy-link-button";
+import { ClicksChart } from "@/features/links/components/clicks-chart";
+import { CopyLinkButton } from "@/features/links/components/copy-link-button";
 import {
   Card,
   CardContent,
@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth/session";
-import { fillMissingDays } from "@/lib/chart";
+import { fillMissingDays } from "@/features/links/chart";
 import { getDailyClicks, getLinkById } from "@/lib/db/links";
 
 const dateFormatter = new Intl.DateTimeFormat("en-US", {

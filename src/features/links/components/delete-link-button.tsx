@@ -15,7 +15,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { deleteLinkAction } from "@/lib/actions/links";
+import { deleteLinkAction } from "@/features/links/actions";
 
 export function DeleteLinkButton({ id, slug }: { id: string; slug: string }) {
   const [open, setOpen] = useState(false);

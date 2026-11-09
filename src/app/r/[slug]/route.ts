@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { trackClickAndGetDestination } from "@/lib/db/links";
-import { slugSchema } from "@/lib/validations/link";
+import { slugSchema } from "@/features/links/schemas";
 
 export async function GET(
   request: Request,

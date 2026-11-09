@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 
-import { LinksList } from "@/components/links/links-list";
-import { LinksListSkeleton } from "@/components/links/links-list-skeleton";
+import { LinksList } from "@/features/links/components/links-list";
+import { LinksListSkeleton } from "@/features/links/components/links-list-skeleton";
 
 export default function DashboardPage() {
   return (

@@ -6,7 +6,7 @@ import { requireUser } from "@/lib/auth/session";
 import { createLink, deleteLink, SLUG_TAKEN_ERROR } from "@/lib/db/links";
 import type { Link } from "@/lib/db/schema";
 import { fail, type FormResult, type Result } from "@/lib/result";
-import { generateSlug } from "@/lib/slug";
+import { generateSlug } from "@/features/links/slug";
 import {
   toFieldErrors,
   VALIDATION_ERROR,
@@ -15,7 +15,7 @@ import {
   createLinkFields,
   createLinkSchema,
   deleteLinkSchema,
-} from "@/lib/validations/link";
+} from "@/features/links/schemas";
 
 const MAX_SLUG_ATTEMPTS = 5;
 

@@ -1,5 +1,5 @@
-import { EmptyLinks } from "@/components/links/empty-links";
-import { LinksTable } from "@/components/links/links-table";
+import { EmptyLinks } from "@/features/links/components/empty-links";
+import { LinksTable } from "@/features/links/components/links-table";
 import { requireUser } from "@/lib/auth/session";
 import { getLinksByUser } from "@/lib/db/links";
 
