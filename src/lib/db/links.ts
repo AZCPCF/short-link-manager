@@ -109,7 +109,7 @@ export async function getDailyClicks(
 
     const day = sql<string>`to_char(${clicks.clickedAt} at time zone 'UTC', 'YYYY-MM-DD')`;
     const rows = await db
-      .select({ date: day, count: count() })
+      .select({ date: day, count: sql<number>`count(*)::int`  })
       .from(clicks)
       .innerJoin(links, eq(links.id, clicks.linkId))
       .where(
