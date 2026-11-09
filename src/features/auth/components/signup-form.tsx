@@ -22,6 +22,7 @@ export function SignUpForm() {
         name="name"
         label="Name"
         autoComplete="name"
+        placeholder="Jane Doe"
         error={state?.fieldErrors?.name}
       />
       <FormField
@@ -29,6 +30,7 @@ export function SignUpForm() {
         label="Email"
         type="email"
         autoComplete="email"
+        placeholder="you@example.com"
         error={state?.fieldErrors?.email}
       />
       <FormField
@@ -36,6 +38,7 @@ export function SignUpForm() {
         label="Password"
         type="password"
         autoComplete="new-password"
+        placeholder="Create a password"
         hint="At least 8 characters."
         error={state?.fieldErrors?.password}
       />

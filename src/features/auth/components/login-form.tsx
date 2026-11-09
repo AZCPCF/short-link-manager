@@ -23,6 +23,7 @@ export function LoginForm() {
         label="Email"
         type="email"
         autoComplete="email"
+        placeholder="you@example.com"
         error={state?.fieldErrors?.email}
       />
       <FormField
@@ -30,6 +31,7 @@ export function LoginForm() {
         label="Password"
         type="password"
         autoComplete="current-password"
+        placeholder="Your password"
         error={state?.fieldErrors?.password}
       />
       <Button type="submit" disabled={isPending}>
