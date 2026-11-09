@@ -5,3 +5,7 @@ export type Result<T> =
 export const ok = <T>(data: T): Result<T> => ({ data, error: null });
 
 export const fail = (error: string): Result<never> => ({ data: null, error });
+
+export type FormResult<T, K extends string> = Result<T> & {
+  fieldErrors?: Partial<Record<K, string>>;
+};

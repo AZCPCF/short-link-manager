@@ -30,3 +30,5 @@ export const createLinkSchema = z.object({
 export const deleteLinkSchema = z.object({
   id: z.uuid(),
 });
+
+export const createLinkFields = ["destinationUrl", "slug", "title"] as const;
