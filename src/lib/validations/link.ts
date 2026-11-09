@@ -1,5 +1,12 @@
 import { z } from "zod";
 
+export const slugSchema = z
+  .string()
+  .trim()
+  .max(64, "Slug can be at most 64 characters.")
+  .regex(/^[a-zA-Z0-9-]+$/, "Use only letters, numbers and dashes.");
+
+
 const emptyToUndefined = (value: unknown) =>
   typeof value === "string" && value.trim() === "" ? undefined : value;
 
@@ -8,15 +15,7 @@ export const createLinkSchema = z.object({
     .string()
     .trim()
     .pipe(z.url({ protocol: /^https?$/, error: "Enter a valid http(s) URL." })),
-  slug: z.preprocess(
-    emptyToUndefined,
-    z
-      .string()
-      .trim()
-      .max(64, "Slug can be at most 64 characters.")
-      .regex(/^[a-zA-Z0-9-]+$/, "Use only letters, numbers and dashes.")
-      .optional(),
-  ),
+  slug: z.preprocess(emptyToUndefined, slugSchema.optional()),
   title: z.preprocess(
     emptyToUndefined,
     z
@@ -32,3 +31,4 @@ export const deleteLinkSchema = z.object({
 });
 
 export const createLinkFields = ["destinationUrl", "slug", "title"] as const;
+
