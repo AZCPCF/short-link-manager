@@ -2,9 +2,9 @@ import Link from "next/link";
 import { Suspense, type ReactNode } from "react";
 
 import { CreateLinkDialog } from "@/features/links/components/create-link-dialog";
-import { LogoutButton } from "@/components/logout-button";
+import { LogoutButton } from "@/features/auth/components/logout-button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { signOut } from "@/lib/actions/auth";
+import { signOut } from "@/features/auth/actions";
 import { requireUser } from "@/lib/auth/session";
 import { ThemeToggle } from "../../components/theme-toggle";
 

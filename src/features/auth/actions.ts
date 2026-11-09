@@ -9,7 +9,7 @@ import {
   signInSchema,
   signUpFields,
   signUpSchema,
-} from "@/lib/validations/auth";
+} from "@/features/auth/schemas";
 import {
   toFieldErrors,
   VALIDATION_ERROR,
