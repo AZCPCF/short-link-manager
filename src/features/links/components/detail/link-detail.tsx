@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
-import { ClicksChart } from "@/features/links/components/clicks-chart";
-import { CopyLinkButton } from "@/features/links/components/copy-link-button";
+import { ClicksChart } from "@/features/links/components/detail/clicks-chart";
+import { CopyLinkButton } from "@/features/links/components/buttons/copy-link-button";
 import {
   Card,
   CardContent,

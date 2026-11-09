@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Suspense, type ReactNode } from "react";
 
-import { CreateLinkDialog } from "@/features/links/components/create-link-dialog";
+import { CreateLinkDialog } from "@/features/links/components/create/create-link-dialog";
 import { LogoutButton } from "@/features/auth/components/logout-button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { signOut } from "@/features/auth/actions";

@@ -3,7 +3,7 @@
 import { Plus } from "lucide-react";
 import { useCallback, useState } from "react";
 
-import { CreateLinkForm } from "@/features/links/components/create-link-form";
+import { CreateLinkForm } from "@/features/links/components/create/create-link-form";
 import { buttonVariants } from "@/components/ui/button";
 import {
   Dialog,

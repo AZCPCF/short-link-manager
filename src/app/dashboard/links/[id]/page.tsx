@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Suspense } from "react";
 
-import { LinkDetail } from "@/features/links/components/link-detail";
-import { LinkDetailSkeleton } from "@/features/links/components/link-detail-skeleton";
+import { LinkDetail } from "@/features/links/components/detail/link-detail";
+import { LinkDetailSkeleton } from "@/features/links/components/detail/link-detail-skeleton";
 
 export default function LinkDetailPage({
   params,
