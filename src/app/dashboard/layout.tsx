@@ -1,13 +1,12 @@
 import Link from "next/link";
 import { Suspense, type ReactNode } from "react";
 
-import { Button } from "@/components/ui/button";
+import { CreateLinkDialog } from "@/components/links/create-link-dialog";
+import { LogoutButton } from "@/components/logout-button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { signOut } from "@/lib/actions/auth";
 import { requireUser } from "@/lib/auth/session";
 import { ThemeToggle } from "../../components/theme-toggle";
-import { CreateLinkDialog } from "@/components/links/create-link-dialog";
-import { LogoutButton } from "@/components/logout-button";
 
 async function Greeting() {
   const user = await requireUser();
