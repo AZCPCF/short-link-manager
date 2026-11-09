@@ -7,6 +7,8 @@ import { clicks, links, type Link, type NewLink } from "./schema";
 
 const GENERIC_ERROR = "Something went wrong. Please try again.";
 
+export const SLUG_TAKEN_ERROR = "That slug is already taken.";
+
 function isUniqueViolation(error: unknown): boolean {
   return (
     typeof error === "object" &&
