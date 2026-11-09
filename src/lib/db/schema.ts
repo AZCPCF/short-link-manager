@@ -42,4 +42,3 @@ export const clicks = pgTable(
 
 export type Link = typeof links.$inferSelect;
 export type NewLink = typeof links.$inferInsert;
-export type Click = typeof clicks.$inferSelect;
