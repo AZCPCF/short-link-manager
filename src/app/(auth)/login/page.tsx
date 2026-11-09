@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { ThemeToggle } from "@/components/theme-toggle";
 import {
   Card,
   CardContent,
@@ -14,10 +15,15 @@ export default function LoginPage() {
     <main className="flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle>Log in</CardTitle>
-          <CardDescription>
-            Welcome back. Enter your details to continue.
-          </CardDescription>
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex flex-col gap-2">
+              <CardTitle>Log in</CardTitle>
+              <CardDescription>
+                Welcome back. Enter your details to continue.
+              </CardDescription>
+            </div>
+            <ThemeToggle />
+          </div>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <LoginForm />
