@@ -14,7 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { signUp } from "@/lib/actions/auth";
-import { useManualSubmit } from "@/lib/hooks/use-manual-submit";
+import { useManualSubmit } from "@/lib/form/use-manual-submit";
 
 export default function SignUpPage() {
   const [state, formAction, isPending] = useActionState(signUp, null);

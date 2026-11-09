@@ -13,7 +13,7 @@ import {
 import {
   toFieldErrors,
   VALIDATION_ERROR,
-} from "@/lib/validations/field-errors";
+} from "@/lib/form/field-errors";
 
 export type SignUpResult = FormResult<null, (typeof signUpFields)[number]>;
 export type SignInResult = FormResult<null, (typeof signInFields)[number]>;

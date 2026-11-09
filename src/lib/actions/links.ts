@@ -10,7 +10,7 @@ import { generateSlug } from "@/lib/slug";
 import {
   toFieldErrors,
   VALIDATION_ERROR,
-} from "@/lib/validations/field-errors";
+} from "@/lib/form/field-errors";
 import {
   createLinkFields,
   createLinkSchema,
