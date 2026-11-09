@@ -3,16 +3,31 @@
 import { redirect } from "next/navigation";
 
 import { auth } from "@/lib/auth/server";
-import { fail, type Result } from "@/lib/result";
-import { signInSchema, signUpSchema } from "@/lib/validations/auth";
+import { fail, type FormResult } from "@/lib/result";
+import {
+  signInFields,
+  signInSchema,
+  signUpFields,
+  signUpSchema,
+} from "@/lib/validations/auth";
+import {
+  toFieldErrors,
+  VALIDATION_ERROR,
+} from "@/lib/validations/field-errors";
+
+export type SignUpResult = FormResult<null, (typeof signUpFields)[number]>;
+export type SignInResult = FormResult<null, (typeof signInFields)[number]>;
 
 export async function signUp(
-  _prevState: Result<null> | null,
+  _prevState: SignUpResult | null,
   formData: FormData,
-): Promise<Result<null>> {
+): Promise<SignUpResult> {
   const parsed = signUpSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) {
-    return fail(parsed.error.issues[0]?.message ?? "Invalid input.");
+    return {
+      ...fail(VALIDATION_ERROR),
+      fieldErrors: toFieldErrors(parsed.error, signUpFields),
+    };
   }
 
   const { error } = await auth.signUp.email(parsed.data);
@@ -25,12 +40,15 @@ export async function signUp(
 }
 
 export async function signIn(
-  _prevState: Result<null> | null,
+  _prevState: SignInResult | null,
   formData: FormData,
-): Promise<Result<null>> {
+): Promise<SignInResult> {
   const parsed = signInSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) {
-    return fail(parsed.error.issues[0]?.message ?? "Invalid input.");
+    return {
+      ...fail(VALIDATION_ERROR),
+      fieldErrors: toFieldErrors(parsed.error, signInFields),
+    };
   }
 
   const { error } = await auth.signIn.email(parsed.data);

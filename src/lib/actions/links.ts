@@ -4,16 +4,25 @@ import { revalidatePath } from "next/cache";
 
 import { requireUser } from "@/lib/auth/session";
 import { createLink, deleteLink, SLUG_TAKEN_ERROR } from "@/lib/db/links";
-import { fail, type Result } from "@/lib/result";
-import { generateSlug } from "@/lib/slug";
-import { createLinkSchema, deleteLinkSchema } from "@/lib/validations/link";
 import type { Link } from "@/lib/db/schema";
+import { fail, type FormResult, type Result } from "@/lib/result";
+import { generateSlug } from "@/lib/slug";
+import {
+  toFieldErrors,
+  VALIDATION_ERROR,
+} from "@/lib/validations/field-errors";
+import {
+  createLinkFields,
+  createLinkSchema,
+  deleteLinkSchema,
+} from "@/lib/validations/link";
 
 const MAX_SLUG_ATTEMPTS = 5;
-const FIELDS = ["destinationUrl", "slug", "title"] as const;
 
-export type CreateLinkField = (typeof FIELDS)[number];
-export type CreateLinkResult = Result<Link> & { field?: CreateLinkField };
+export type CreateLinkResult = FormResult<
+  Link,
+  (typeof createLinkFields)[number]
+>;
 
 export async function createLinkAction(
   _prevState: CreateLinkResult | null,
@@ -23,10 +32,9 @@ export async function createLinkAction(
 
   const parsed = createLinkSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) {
-    const issue = parsed.error.issues[0];
     return {
-      ...fail(issue?.message ?? "Invalid input."),
-      field: FIELDS.find((field) => field === issue?.path[0]),
+      ...fail(VALIDATION_ERROR),
+      fieldErrors: toFieldErrors(parsed.error, createLinkFields),
     };
   }
 
@@ -48,7 +56,7 @@ export async function createLinkAction(
   }
 
   return slug
-    ? { ...fail(SLUG_TAKEN_ERROR), field: "slug" }
+    ? { ...fail(SLUG_TAKEN_ERROR), fieldErrors: { slug: SLUG_TAKEN_ERROR } }
     : fail("Could not generate a unique link. Please try again.");
 }
 

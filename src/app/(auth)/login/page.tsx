@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
+import { toast } from "sonner";
 
+import { FormField } from "@/components/form-field";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,12 +13,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { signIn } from "@/lib/actions/auth";
+import { useManualSubmit } from "@/lib/hooks/use-manual-submit";
 
 export default function LoginPage() {
   const [state, formAction, isPending] = useActionState(signIn, null);
+  const handleSubmit = useManualSubmit(formAction);
+
+  useEffect(() => {
+    if (state?.error && !state.fieldErrors) toast.error(state.error);
+  }, [state]);
 
   return (
     <main className="flex min-h-screen items-center justify-center p-4">
@@ -28,32 +34,28 @@ export default function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form action={formAction} className="flex flex-col gap-4">
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-              />
-            </div>
-            {state?.error && (
-              <p role="alert" className="text-sm text-destructive">
-                {state.error}
-              </p>
-            )}
+          <form
+            onSubmit={handleSubmit}
+            noValidate
+            className="flex flex-col gap-4"
+          >
+            <FormField
+              name="email"
+              label="Email"
+              type="email"
+              autoComplete="email"
+              placeholder="example@gmail.com"
+              error={state?.fieldErrors?.email}
+            />
+            <FormField
+              name="password"
+              label="Password"
+              type="password"
+              autoComplete="current-password"
+              placeholder="********"
+              hint="At least 8 characters."
+              error={state?.fieldErrors?.password}
+            />
             <Button type="submit" disabled={isPending}>
               {isPending ? "Logging in..." : "Log in"}
             </Button>
