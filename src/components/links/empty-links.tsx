@@ -6,7 +6,7 @@ export function EmptyLinks() {
       <Link2 className="size-8 text-muted-foreground" aria-hidden="true" />
       <h3 className="font-medium">No links yet</h3>
       <p className="max-w-sm text-sm text-muted-foreground">
-        Paste a long URL in the form above to create your first short link.
+        Use the New link button to create your first short link.
       </p>
     </div>
   );

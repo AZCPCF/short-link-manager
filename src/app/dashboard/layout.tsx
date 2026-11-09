@@ -5,7 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { signOut } from "@/lib/actions/auth";
 import { requireUser } from "@/lib/auth/session";
-import { ThemeToggle } from "../theme-toggle";
+import { ThemeToggle } from "../../components/theme-toggle";
+import { CreateLinkDialog } from "@/components/links/create-link-dialog";
+import { LogoutButton } from "@/components/logout-button";
 
 async function Greeting() {
   const user = await requireUser();
@@ -21,7 +23,7 @@ async function Greeting() {
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 p-4 sm:p-6">
-      <header className="flex items-center justify-between gap-4">
+      <header className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex min-w-0 flex-col gap-1">
           <Link href="/dashboard" className="text-lg font-semibold">
             Short Link Manager
@@ -30,12 +32,11 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <Greeting />
           </Suspense>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 max-md:w-full justify-end">
+          <CreateLinkDialog />
           <ThemeToggle />
           <form action={signOut}>
-            <Button type="submit" variant="outline">
-              Log out
-            </Button>
+            <LogoutButton />
           </form>
         </div>
       </header>
