@@ -1,29 +1,37 @@
 import { Suspense } from "react";
 
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { signOut } from "@/lib/actions/auth";
-import { requireUser } from "@/lib/auth/session";
 import { CreateLinkForm } from "@/components/links/create-link-form";
-
-async function Greeting() {
-  const user = await requireUser();
-
-  return <h1 className="text-2xl font-semibold">Hi, {user.name}</h1>;
-}
+import { LinksList } from "@/components/links/links-list";
+import { LinksListSkeleton } from "@/components/links/links-list-skeleton";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default function DashboardPage() {
   return (
-    <main className="mx-auto flex max-w-3xl flex-col gap-4 p-6">
-      <Suspense fallback={<Skeleton className="h-8 w-48" />}>
-        <Greeting />
-        <CreateLinkForm />
-      </Suspense>
-      <form action={signOut}>
-        <Button type="submit" variant="outline">
-          Log out
-        </Button>
-      </form>
-    </main>
+    <>
+      <Card>
+        <CardHeader>
+          <CardTitle>New short link</CardTitle>
+          <CardDescription>
+            Leave the slug empty to get a random 6-character one.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <CreateLinkForm />
+        </CardContent>
+      </Card>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-lg font-semibold">Your links</h2>
+        <Suspense fallback={<LinksListSkeleton />}>
+          <LinksList />
+        </Suspense>
+      </section>
+    </>
   );
 }
