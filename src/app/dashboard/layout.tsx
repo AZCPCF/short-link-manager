@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { signOut } from "@/lib/actions/auth";
 import { requireUser } from "@/lib/auth/session";
+import { ThemeToggle } from "../theme-toggle";
 
 async function Greeting() {
   const user = await requireUser();
@@ -29,11 +30,14 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <Greeting />
           </Suspense>
         </div>
-        <form action={signOut}>
-          <Button type="submit" variant="outline">
-            Log out
-          </Button>
-        </form>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <form action={signOut}>
+            <Button type="submit" variant="outline">
+              Log out
+            </Button>
+          </form>
+        </div>
       </header>
       <main className="flex flex-col gap-8">{children}</main>
     </div>
