@@ -1,4 +1,4 @@
-import { Link2 } from "lucide-react";
+import { Atom } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { SITE_NAME } from "@/lib/site";
@@ -12,7 +12,7 @@ export function Logo({ className }: { className?: string }) {
       )}
     >
       <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-        <Link2 className="size-4" aria-hidden="true" />
+        <Atom className="size-4" aria-hidden="true" />
       </span>
       {SITE_NAME}
     </span>
