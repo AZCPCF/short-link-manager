@@ -1,6 +1,7 @@
 "use client";
 
 import { Trash2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
@@ -18,6 +19,8 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { deleteLinkAction } from "@/features/links/actions";
 
 export function DeleteLinkButton({ id, slug }: { id: string; slug: string }) {
+  const t = useTranslations("Links.delete");
+  const errors = useTranslations("Errors");
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -25,10 +28,10 @@ export function DeleteLinkButton({ id, slug }: { id: string; slug: string }) {
     startTransition(async () => {
       const result = await deleteLinkAction(id);
       if (result.error !== null) {
-        toast.error(result.error);
+        toast.error(errors(result.error));
         return;
       }
-      toast.success("Link deleted.");
+      toast.success(t("success"));
       setOpen(false);
     });
   }
@@ -37,26 +40,34 @@ export function DeleteLinkButton({ id, slug }: { id: string; slug: string }) {
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger
         className={buttonVariants({ variant: "ghost", size: "icon" })}
-        aria-label={`Delete /r/${slug}`}
+        aria-label={t("label", { slug })}
       >
         <Trash2 />
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete this link?</AlertDialogTitle>
+          <AlertDialogTitle>{t("title")}</AlertDialogTitle>
           <AlertDialogDescription>
-            /r/{slug} will stop working and its click history will be
-            permanently deleted. This can&apos;t be undone.
+            {t.rich("description", {
+              slug,
+              path: (chunks) => (
+                <bdi dir="ltr" className="font-mono">
+                  {chunks}
+                </bdi>
+              ),
+            })}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isPending}>
+            {t("cancel")}
+          </AlertDialogCancel>
           <Button
             variant="destructive"
             onClick={handleDelete}
             disabled={isPending}
           >
-            {isPending ? "Deleting..." : "Delete"}
+            {isPending ? t("confirming") : t("confirm")}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -29,7 +29,7 @@ export async function createLink(input: NewLink): Promise<Result<Link>> {
   } catch (error) {
     if (isUniqueViolation(error)) return fail("That slug is already taken.");
     console.error("createLink failed", error);
-    return fail(GENERIC_ERROR);
+    return fail("generic");
   }
 }
 
@@ -43,7 +43,7 @@ export async function getLinksByUser(userId: string): Promise<Result<Link[]>> {
     return ok(rows);
   } catch (error) {
     console.error("getLinksByUser failed", error);
-    return fail(GENERIC_ERROR);
+    return fail("generic");
   }
 }
 
@@ -59,7 +59,7 @@ export async function getLinkById(
     return ok(link ?? null);
   } catch (error) {
     console.error("getLinkById failed", error);
-    return fail(GENERIC_ERROR);
+    return fail("generic");
   }
 }
 
@@ -74,7 +74,7 @@ export async function deleteLink(
     return ok(null);
   } catch (error) {
     console.error("deleteLink failed", error);
-    return fail(GENERIC_ERROR);
+    return fail("generic");
   }
 }
 
@@ -95,7 +95,7 @@ export async function trackClickAndGetDestination(
     return ok(link.destinationUrl);
   } catch (error) {
     console.error("trackClickAndGetDestination failed", error);
-    return fail(GENERIC_ERROR);
+    return fail("generic");
   }
 }
 
@@ -126,6 +126,6 @@ export async function getDailyClicks(
     return ok(rows);
   } catch (error) {
     console.error("getDailyClicks failed", error);
-    return fail(GENERIC_ERROR);
+    return fail("generic");
   }
 }

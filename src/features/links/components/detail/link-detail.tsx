@@ -1,3 +1,4 @@
+import { getFormatter, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 import { PageHeader } from "@/components/kit/page-header";
@@ -12,13 +13,8 @@ import {
 import { fillMissingDays } from "@/features/links/chart";
 import { requireUser } from "@/lib/auth/session";
 import { getDailyClicks, getLinkById } from "@/lib/db/links";
-import { CopyLinkButton } from "../buttons/copy-link-button";
 import { ClicksChart } from "./clicks-chart";
-
-const dateFormatter = new Intl.DateTimeFormat("en-US", {
-  dateStyle: "medium",
-  timeZone: "UTC",
-});
+import { CopyLinkButton } from "../buttons/copy-link-button";
 
 export async function LinkDetail({ id }: { id: string }) {
   const user = await requireUser();
@@ -32,6 +28,10 @@ export async function LinkDetail({ id }: { id: string }) {
   if (clicksResult.error !== null) throw new Error(clicksResult.error);
   if (!linkResult.data) notFound();
 
+  const [t, format] = await Promise.all([
+    getTranslations("Links.detail"),
+    getFormatter(),
+  ]);
   const link = linkResult.data;
   const chartData = fillMissingDays(clicksResult.data);
 
@@ -41,7 +41,7 @@ export async function LinkDetail({ id }: { id: string }) {
         title={link.title ?? `/r/${link.slug}`}
         description={
           <span className="flex items-center gap-1">
-            /r/{link.slug}
+            <bdi dir="ltr">/r/{link.slug}</bdi>
             <CopyLinkButton slug={link.slug} />
           </span>
         }
@@ -50,29 +50,33 @@ export async function LinkDetail({ id }: { id: string }) {
       <div className="grid gap-4 sm:grid-cols-2">
         <StatCard
           className="sm:col-span-2"
-          label="Destination"
+          label={t("destination")}
           value={
             <a
               href={link.destinationUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-base font-medium break-all hover:underline"
+              dir="ltr"
+              className="block text-base font-medium break-all hover:underline"
             >
               {link.destinationUrl}
             </a>
           }
         />
-        <StatCard label="Total clicks" value={link.clickCount} />
         <StatCard
-          label="Created"
-          value={dateFormatter.format(link.createdAt)}
+          label={t("totalClicks")}
+          value={format.number(link.clickCount)}
+        />
+        <StatCard
+          label={t("created")}
+          value={format.dateTime(link.createdAt, { dateStyle: "medium" })}
         />
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Clicks per day</CardTitle>
-          <CardDescription>Last 7 days (UTC)</CardDescription>
+          <CardTitle>{t("chartTitle")}</CardTitle>
+          <CardDescription>{t("chartDescription")}</CardDescription>
         </CardHeader>
         <CardContent>
           <ClicksChart data={chartData} />

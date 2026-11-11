@@ -1,19 +1,17 @@
 "use server";
 
-import { redirect } from "next/navigation";
+import { getLocale } from "next-intl/server";
 
-import { auth } from "@/lib/auth/server";
-import { fail, type FormResult } from "@/lib/result";
 import {
   signInFields,
   signInSchema,
   signUpFields,
   signUpSchema,
 } from "@/features/auth/schemas";
-import {
-  toFieldErrors,
-  VALIDATION_ERROR,
-} from "@/lib/form/field-errors";
+import { redirect } from "@/i18n/navigation";
+import { auth } from "@/lib/auth/server";
+import { toFieldErrors } from "@/lib/form/field-errors";
+import { fail, type FormResult } from "@/lib/result";
 
 export type SignUpResult = FormResult<null, (typeof signUpFields)[number]>;
 export type SignInResult = FormResult<null, (typeof signInFields)[number]>;
@@ -25,7 +23,7 @@ export async function signUp(
   const parsed = signUpSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) {
     return {
-      ...fail(VALIDATION_ERROR),
+      ...fail("validation"),
       fieldErrors: toFieldErrors(parsed.error, signUpFields),
     };
   }
@@ -33,10 +31,10 @@ export async function signUp(
   const { error } = await auth.signUp.email(parsed.data);
   if (error) {
     console.error("signUp failed", error);
-    return fail("Could not create account. This email may already be in use.");
+    return fail("signUpFailed");
   }
 
-  redirect("/dashboard");
+  return redirect({ href: "/dashboard", locale: await getLocale() });
 }
 
 export async function signIn(
@@ -46,7 +44,7 @@ export async function signIn(
   const parsed = signInSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) {
     return {
-      ...fail(VALIDATION_ERROR),
+      ...fail("validation"),
       fieldErrors: toFieldErrors(parsed.error, signInFields),
     };
   }
@@ -54,13 +52,13 @@ export async function signIn(
   const { error } = await auth.signIn.email(parsed.data);
   if (error) {
     console.error("signIn failed", error);
-    return fail("Invalid email or password.");
+    return fail("invalidCredentials");
   }
 
-  redirect("/dashboard");
+  return redirect({ href: "/dashboard", locale: await getLocale() });
 }
 
 export async function signOut(): Promise<void> {
   await auth.signOut();
-  redirect("/login");
+  return redirect({ href: "/login", locale: await getLocale() });
 }

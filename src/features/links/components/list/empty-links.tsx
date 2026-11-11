@@ -1,14 +1,17 @@
 import { Link2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { EmptyState } from "@/components/kit/empty-state";
 import { CreateLinkDialog } from "../create/create-link-dialog";
 
 export function EmptyLinks() {
+  const t = useTranslations("Links.empty");
+
   return (
     <EmptyState
       icon={Link2}
-      title="No links yet"
-      description="Create your first short link and start tracking its clicks."
+      title={t("title")}
+      description={t("description")}
       action={<CreateLinkDialog />}
     />
   );

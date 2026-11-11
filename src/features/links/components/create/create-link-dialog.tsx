@@ -1,9 +1,9 @@
 "use client";
 
 import { Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useCallback, useState } from "react";
 
-import { CreateLinkForm } from "@/features/links/components/create/create-link-form";
 import { buttonVariants } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,8 +13,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { CreateLinkForm } from "./create-link-form";
 
 export function CreateLinkDialog() {
+  const t = useTranslations("Links");
   const [open, setOpen] = useState(false);
   const close = useCallback(() => setOpen(false), []);
 
@@ -22,14 +24,12 @@ export function CreateLinkDialog() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className={buttonVariants()}>
         <Plus />
-        New link
+        {t("new")}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>New short link</DialogTitle>
-          <DialogDescription>
-            Leave the slug empty to get a random 6-character one.
-          </DialogDescription>
+          <DialogTitle>{t("create.title")}</DialogTitle>
+          <DialogDescription>{t("create.description")}</DialogDescription>
         </DialogHeader>
         <CreateLinkForm onSuccess={close} />
       </DialogContent>

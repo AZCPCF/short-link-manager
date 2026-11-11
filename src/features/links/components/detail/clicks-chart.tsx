@@ -1,5 +1,6 @@
 "use client";
 
+import { useFormatter, useTranslations } from "next-intl";
 import {
   Bar,
   BarChart,
@@ -11,26 +12,23 @@ import {
 } from "recharts";
 
 import type { DailyClicks } from "@/lib/db/links";
-import { ReactNode } from "react";
-
-const labelFormatter = new Intl.DateTimeFormat("en-US", {
-  month: "short",
-  day: "numeric",
-  timeZone: "UTC",
-});
-
-function formatDate(date: ReactNode): string {
-  if (typeof date !== "string") return "";
-
-  return labelFormatter.format(new Date(`${date}T00:00:00Z`));
-}
 
 export function ClicksChart({ data }: { data: DailyClicks[] }) {
+  const t = useTranslations("Links.detail");
+  const format = useFormatter();
+
+  const formatDate = (date: string) =>
+    format.dateTime(new Date(`${date}T00:00:00Z`), {
+      month: "short",
+      day: "numeric",
+    });
+
   return (
     <div
       className="h-64 w-full"
+      dir="ltr"
       role="img"
-      aria-label="Clicks per day for the last 7 days"
+      aria-label={t("chartLabel")}
     >
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
@@ -51,13 +49,17 @@ export function ClicksChart({ data }: { data: DailyClicks[] }) {
           />
           <YAxis
             allowDecimals={false}
+            tickFormatter={(value: number) => format.number(value)}
             tickLine={false}
             axisLine={false}
             tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
           />
           <Tooltip
-            labelFormatter={formatDate}
-            formatter={(value) => [value, "Clicks"]}
+            labelFormatter={(label) => formatDate(String(label))}
+            formatter={(value) => [
+              format.number(Number(value)),
+              t("tooltipClicks"),
+            ]}
             cursor={{ fill: "var(--muted)" }}
             contentStyle={{
               background: "var(--popover)",

@@ -2,20 +2,17 @@
 
 import { revalidatePath } from "next/cache";
 
-import { requireUser } from "@/lib/auth/session";
-import { createLink, deleteLink, SLUG_TAKEN_ERROR } from "@/lib/db/links";
-import type { Link } from "@/lib/db/schema";
-import { fail, type FormResult, type Result } from "@/lib/result";
-import { generateSlug } from "@/features/links/slug";
-import {
-  toFieldErrors,
-  VALIDATION_ERROR,
-} from "@/lib/form/field-errors";
 import {
   createLinkFields,
   createLinkSchema,
   deleteLinkSchema,
 } from "@/features/links/schemas";
+import { generateSlug } from "@/features/links/slug";
+import { requireUser } from "@/lib/auth/session";
+import { createLink, deleteLink } from "@/lib/db/links";
+import type { Link } from "@/lib/db/schema";
+import { toFieldErrors } from "@/lib/form/field-errors";
+import { fail, type FormResult, type Result } from "@/lib/result";
 
 const MAX_SLUG_ATTEMPTS = 5;
 
@@ -33,7 +30,7 @@ export async function createLinkAction(
   const parsed = createLinkSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) {
     return {
-      ...fail(VALIDATION_ERROR),
+      ...fail("validation"),
       fieldErrors: toFieldErrors(parsed.error, createLinkFields),
     };
   }
@@ -49,24 +46,24 @@ export async function createLinkAction(
       title,
     });
 
-    if (result.error !== SLUG_TAKEN_ERROR) {
-      if (result.data) revalidatePath("/dashboard");
+    if (result.error !== "slugTaken") {
+      if (result.data) revalidatePath("/[locale]/dashboard", "page");
       return result;
     }
   }
 
   return slug
-    ? { ...fail(SLUG_TAKEN_ERROR), fieldErrors: { slug: SLUG_TAKEN_ERROR } }
-    : fail("Could not generate a unique link. Please try again.");
+    ? { ...fail("slugTaken"), fieldErrors: { slug: "slugTaken" } }
+    : fail("slugGenerationFailed");
 }
 
 export async function deleteLinkAction(id: string): Promise<Result<null>> {
   const user = await requireUser();
 
   const parsed = deleteLinkSchema.safeParse({ id });
-  if (!parsed.success) return fail("Invalid link.");
+  if (!parsed.success) return fail("invalidLink");
 
   const result = await deleteLink(parsed.data.id, user.id);
-  if (!result.error) revalidatePath("/dashboard");
+  if (!result.error) revalidatePath("/[locale]/dashboard", "page");
   return result;
 }
