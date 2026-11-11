@@ -10,6 +10,6 @@ export const requireUser = cache(async () => {
   await connection();
   const { data } = await auth.getSession();
   if (!data?.user)
-    return redirect({ href: "/login", locale: await getLocale() });
+    return redirect({ href: "/", locale: await getLocale() });
   return data.user;
 });

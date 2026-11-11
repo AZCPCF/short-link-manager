@@ -60,5 +60,5 @@ export async function signIn(
 
 export async function signOut(): Promise<void> {
   await auth.signOut();
-  return redirect({ href: "/login", locale: await getLocale() });
+  return redirect({ href: "/", locale: await getLocale() });
 }

@@ -8,16 +8,21 @@ import { auth } from "@/lib/auth/server";
 
 const intlProxy = createIntlProxy(routing);
 
-const loginUrlFor = (locale: AppLocale): string => `/${locale}/login`;
+const homeUrlFor = (locale: AppLocale): string => `/${locale}`;
 
 const authProxies: Record<AppLocale, ReturnType<typeof auth.middleware>> = {
-  en: auth.middleware({ loginUrl: loginUrlFor("en") }),
-  fa: auth.middleware({ loginUrl: loginUrlFor("fa") }),
+  en: auth.middleware({ loginUrl: homeUrlFor("en") }),
+  fa: auth.middleware({ loginUrl: homeUrlFor("fa") }),
 };
 
-function parsePath(pathname: string): { locale: AppLocale | null; path: string } {
+function parsePath(pathname: string): {
+  locale: AppLocale | null;
+  path: string;
+} {
   const [first, ...rest] = pathname.split("/").filter(Boolean);
-  if (hasLocale(locales, first)) return { locale: first, path: `/${rest.join("/")}` };
+  if (hasLocale(locales, first)) {
+    return { locale: first, path: `/${rest.join("/")}` };
+  }
   return { locale: null, path: pathname };
 }
 
@@ -32,7 +37,9 @@ export default async function proxy(request: NextRequest) {
   }
 
   const response = intlProxy(request);
-  for (const cookie of authCookies) response.headers.append("set-cookie", cookie);
+  for (const cookie of authCookies) {
+    response.headers.append("set-cookie", cookie);
+  }
   return response;
 }
 

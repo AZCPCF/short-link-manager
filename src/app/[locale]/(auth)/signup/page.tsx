@@ -18,6 +18,7 @@ export default async function SignUpPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
+  
   const locale = await resolveLocale(params);
   const t = await getTranslations({ locale, namespace: "Auth" });
 
