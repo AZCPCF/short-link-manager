@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Suspense, type ReactNode } from "react";
 
 import { Container } from "@/components/kit/container";
@@ -9,14 +9,21 @@ import { signOut } from "@/features/auth/actions";
 import { LogoutButton } from "@/features/auth/components/logout-button";
 import { requireUser } from "@/lib/auth/session";
 import { CreateLinkDialog } from "@/features/links/components/create/create-link-dialog";
+import { LocaleSwitcher } from "@/components/locale-switcher";
+import { getTranslations } from "next-intl/server";
 
 async function Greeting() {
   const user = await requireUser();
+  const t = await getTranslations("Dashboard");
 
   return (
     <p className="truncate text-sm text-muted-foreground">
-      Signed in as{" "}
-      <span className="font-medium text-foreground">{user.name}</span>
+      {t.rich("signedInAs", {
+        name: user.name,
+        b: (chunks) => (
+          <span className="font-medium text-foreground">{chunks}</span>
+        ),
+      })}
     </p>
   );
 }
@@ -37,6 +44,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           <div className="flex items-center gap-2">
             <CreateLinkDialog />
             <ThemeToggle />
+            <LocaleSwitcher />
             <form action={signOut}>
               <LogoutButton />
             </form>

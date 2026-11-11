@@ -1,16 +1,22 @@
+import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 
 import { PageHeader } from "@/components/kit/page-header";
+import { resolveLocale } from "@/i18n/server";
 import { LinksListSkeleton } from "@/features/links/components/list/links-list-skeleton";
 import { LinksList } from "@/features/links/components/list/links-list";
 
-export default function DashboardPage() {
+export default async function DashboardPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const locale = await resolveLocale(params);
+  const t = await getTranslations({ locale, namespace: "Dashboard" });
+
   return (
     <section className="flex flex-col gap-6">
-      <PageHeader
-        title="Your links"
-        description="Create, share and track your short links."
-      />
+      <PageHeader title={t("title")} description={t("description")} />
       <Suspense fallback={<LinksListSkeleton />}>
         <LinksList />
       </Suspense>
