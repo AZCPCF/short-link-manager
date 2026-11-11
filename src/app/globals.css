@@ -112,3 +112,7 @@
     @apply font-sans;
   }
 }
+
+html:lang(fa) {
+  font-family: var(--font-vazirmatn), var(--font-sans), system-ui, sans-serif;
+}
