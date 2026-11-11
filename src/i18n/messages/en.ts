@@ -128,6 +128,76 @@ const en = {
       tooltipClicks: "Clicks",
     },
   },
+  landing: {
+    brand: "Short Link Manager",
+    nav: {
+      login: "Log in",
+      signup: "Sign up",
+    },
+    hero: {
+      badge: "Short links, simple stats",
+      title: "Turn long URLs into short links you can track",
+      subtitle:
+        "Short Link Manager lets you create clean, memorable links, share them anywhere, and see how many people open them.",
+      continue: "Continue",
+      learnMore: "How it works",
+    },
+    features: {
+      title: "Everything you need to manage your links",
+      subtitle: "A small, focused toolkit: create, share, track and clean up.",
+      create: {
+        title: "Create in seconds",
+        description:
+          "Paste a long URL and get a short link instantly. Add a custom slug and an optional title, or let the app generate a random 6-character slug.",
+      },
+      track: {
+        title: "Count every click",
+        description:
+          "Every visit to your short link is counted, so you always know how many times it was opened.",
+      },
+      chart: {
+        title: "The last 7 days at a glance",
+        description:
+          "Open any link to see its destination, total clicks, creation date and a clicks-per-day chart for the past week.",
+      },
+      manage: {
+        title: "One simple dashboard",
+        description:
+          "See all your links in one place, copy the short URL with one click, and delete links you no longer need.",
+      },
+      secure: {
+        title: "Private to your account",
+        description:
+          "Sign in with your email and password. Your links and their stats are visible only to you.",
+      },
+      comfort: {
+        title: "Made for any screen",
+        description:
+          "A responsive layout, light and dark themes, and an English and Persian interface.",
+      },
+    },
+    how: {
+      title: "How it works",
+      step1: {
+        title: "Create an account",
+        description:
+          "Sign up with your email and a password. It only takes a few seconds.",
+      },
+      step2: {
+        title: "Create a link",
+        description:
+          "Paste the long URL and, if you like, add a custom slug and a title.",
+      },
+      step3: {
+        title: "Share and track",
+        description:
+          "Share the short link anywhere. Clicks are counted automatically and shown in your dashboard.",
+      },
+    },
+    footer: {
+      tagline: "A small short link app built with Next.js.",
+    },
+  },
 };
 
 export type Messages = typeof en;
