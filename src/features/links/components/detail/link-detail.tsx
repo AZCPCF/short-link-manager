@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
-import { ClicksChart } from "@/features/links/components/detail/clicks-chart";
-import { CopyLinkButton } from "@/features/links/components/buttons/copy-link-button";
+import { PageHeader } from "@/components/kit/page-header";
+import { StatCard } from "@/components/kit/stat-card";
 import {
   Card,
   CardContent,
@@ -9,9 +9,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { requireUser } from "@/lib/auth/session";
 import { fillMissingDays } from "@/features/links/chart";
+import { requireUser } from "@/lib/auth/session";
 import { getDailyClicks, getLinkById } from "@/lib/db/links";
+import { CopyLinkButton } from "../buttons/copy-link-button";
+import { ClicksChart } from "./clicks-chart";
 
 const dateFormatter = new Intl.DateTimeFormat("en-US", {
   dateStyle: "medium",
@@ -35,48 +37,36 @@ export async function LinkDetail({ id }: { id: string }) {
 
   return (
     <>
-      <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-semibold">
-          {link.title ?? `/r/${link.slug}`}
-        </h1>
-        <div className="flex items-center gap-1 text-muted-foreground">
-          <span>/r/{link.slug}</span>
-          <CopyLinkButton slug={link.slug} />
-        </div>
-      </div>
+      <PageHeader
+        title={link.title ?? `/r/${link.slug}`}
+        description={
+          <span className="flex items-center gap-1">
+            /r/{link.slug}
+            <CopyLinkButton slug={link.slug} />
+          </span>
+        }
+      />
 
-      <div className="grid gap-4 sm:grid-cols-3">
-        <Card className="sm:col-span-3">
-          <CardHeader>
-            <CardDescription>Destination</CardDescription>
-            <CardTitle className="text-base font-medium break-all">
-              <a
-                href={link.destinationUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline"
-              >
-                {link.destinationUrl}
-              </a>
-            </CardTitle>
-          </CardHeader>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardDescription>Total clicks</CardDescription>
-            <CardTitle className="text-3xl tabular-nums">
-              {link.clickCount}
-            </CardTitle>
-          </CardHeader>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardDescription>Created</CardDescription>
-            <CardTitle className="text-xl">
-              {dateFormatter.format(link.createdAt)}
-            </CardTitle>
-          </CardHeader>
-        </Card>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <StatCard
+          className="sm:col-span-2"
+          label="Destination"
+          value={
+            <a
+              href={link.destinationUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-base font-medium break-all hover:underline"
+            >
+              {link.destinationUrl}
+            </a>
+          }
+        />
+        <StatCard label="Total clicks" value={link.clickCount} />
+        <StatCard
+          label="Created"
+          value={dateFormatter.format(link.createdAt)}
+        />
       </div>
 
       <Card>

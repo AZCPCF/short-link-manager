@@ -3,7 +3,7 @@
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 
-import { FormField } from "@/components/form-field";
+import { FormField } from "@/components/kit/form-field";
 import { Button } from "@/components/ui/button";
 import { createLinkAction } from "@/features/links/actions";
 import { useManualSubmit } from "@/lib/form/use-manual-submit";

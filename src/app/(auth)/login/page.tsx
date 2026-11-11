@@ -9,10 +9,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { LoginForm } from "@/features/auth/components/login-form";
+import { Logo } from "@/components/kit/logo";
 
 export default function LoginPage() {
   return (
-    <main className="flex min-h-screen items-center justify-center p-4">
+    <main className="flex min-h-screen flex-col items-center justify-center gap-6 p-4">
+      <Logo />
       <Card className="w-full max-w-sm">
         <CardHeader>
           <div className="flex items-start justify-between gap-4">
@@ -25,6 +27,7 @@ export default function LoginPage() {
             <ThemeToggle />
           </div>
         </CardHeader>
+
         <CardContent className="flex flex-col gap-4">
           <LoginForm />
           <p className="text-center text-sm text-muted-foreground">

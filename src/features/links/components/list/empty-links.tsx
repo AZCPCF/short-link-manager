@@ -1,13 +1,15 @@
 import { Link2 } from "lucide-react";
 
+import { EmptyState } from "@/components/kit/empty-state";
+import { CreateLinkDialog } from "../create/create-link-dialog";
+
 export function EmptyLinks() {
   return (
-    <div className="flex flex-col items-center gap-2 rounded-lg border border-dashed p-10 text-center">
-      <Link2 className="size-8 text-muted-foreground" aria-hidden="true" />
-      <h3 className="font-medium">No links yet</h3>
-      <p className="max-w-sm text-sm text-muted-foreground">
-        Use the New link button to create your first short link.
-      </p>
-    </div>
+    <EmptyState
+      icon={Link2}
+      title="No links yet"
+      description="Create your first short link and start tracking its clicks."
+      action={<CreateLinkDialog />}
+    />
   );
 }

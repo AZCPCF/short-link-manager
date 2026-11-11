@@ -9,10 +9,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { SignUpForm } from "@/features/auth/components/signup-form";
+import { Logo } from "@/components/kit/logo";
 
 export default function SignUpPage() {
   return (
-    <main className="flex min-h-screen items-center justify-center p-4">
+    <main className="flex min-h-screen flex-col items-center justify-center gap-6 p-4">
+      <Logo />
       <Card className="w-full max-w-sm">
         <CardHeader>
           <div className="flex items-start justify-between gap-4">

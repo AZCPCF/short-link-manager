@@ -11,6 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { Link } from "@/lib/db/schema";
+import { Badge } from "@/components/ui/badge";
 
 const dateFormatter = new Intl.DateTimeFormat("en-US", {
   dateStyle: "medium",
@@ -53,8 +54,10 @@ export function LinksTable({ links }: { links: Link[] }) {
                   {link.destinationUrl}
                 </div>
               </TableCell>
-              <TableCell className="text-right tabular-nums">
-                {link.clickCount}
+              <TableCell className="text-right">
+                <Badge variant="secondary" className="tabular-nums">
+                  {link.clickCount}
+                </Badge>
               </TableCell>
               <TableCell className="hidden sm:table-cell">
                 {dateFormatter.format(link.createdAt)}
