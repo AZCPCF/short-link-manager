@@ -9,8 +9,10 @@ export function CenteredPage({ children }: { children: ReactNode }) {
   const t = useTranslations("Common");
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center gap-6 p-4">
-      <BackButton label={t("back")} />
-      <div className="absolute end-4 top-4 flex gap-2">
+      <div className="absolute top-4 inset-s-4">
+        <BackButton label={t("back")} />
+      </div>
+      <div className="absolute inset-e-4 top-4 flex gap-2">
         <LocaleSwitcher />
         <ThemeToggle />
       </div>

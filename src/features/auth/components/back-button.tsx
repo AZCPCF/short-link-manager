@@ -9,7 +9,7 @@ export function BackButton({ label }: { label: string }) {
       href="/"
       className={buttonVariants({
         variant: "ghost",
-        size: "sm",
+        size: "lg",
         className: "-ms-2 w-fit justify-self-start",
       })}
     >
