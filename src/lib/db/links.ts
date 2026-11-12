@@ -5,10 +5,6 @@ import { fail, ok, type Result } from "@/lib/result";
 import { db } from ".";
 import { clicks, links, type Link, type NewLink } from "./schema";
 
-const GENERIC_ERROR = "Something went wrong. Please try again.";
-
-export const SLUG_TAKEN_ERROR = "That slug is already taken.";
-
 function isUniqueViolation(error: unknown): boolean {
   let current: unknown = error;
 
@@ -27,7 +23,7 @@ export async function createLink(input: NewLink): Promise<Result<Link>> {
     const [link] = await db.insert(links).values(input).returning();
     return ok(link);
   } catch (error) {
-    if (isUniqueViolation(error)) return fail("That slug is already taken.");
+    if (isUniqueViolation(error)) return fail("slugTaken");
     console.error("createLink failed", error);
     return fail("generic");
   }
@@ -111,7 +107,7 @@ export async function getDailyClicks(
 
     const day = sql<string>`to_char(${clicks.clickedAt} at time zone 'UTC', 'YYYY-MM-DD')`;
     const rows = await db
-      .select({ date: day, count: sql<number>`count(*)::int`  })
+      .select({ date: day, count: sql<number>`count(*)::int` })
       .from(clicks)
       .innerJoin(links, eq(links.id, clicks.linkId))
       .where(
