@@ -1,10 +1,13 @@
 import { Atom } from "lucide-react";
 import Link from "next/link";
 
-import { ThemeToggle } from "@/components/theme-toggle";
-import { buttonVariants } from "@/components/ui/button";
-import { getLandingT } from "@/features/landing/get-t";
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { getLandingT } from "@/features/landing/get-t";
+import { HeaderAuthActions } from "./header-auth-actions";
+import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { AuthSessionProvider } from "@/features/auth/components/auth-session-provider";
 
 export async function LandingHeader() {
   const t = await getLandingT();
@@ -19,15 +22,17 @@ export async function LandingHeader() {
         <div className="flex items-center gap-2">
           <LocaleSwitcher />
           <ThemeToggle />
-          <Link
-            href="/login"
-            className={buttonVariants({ variant: "ghost", size: "sm" })}
-          >
-            {t("nav.login")}
-          </Link>
-          <Link href="/signup" className={buttonVariants({ size: "sm" })}>
-            {t("nav.signup")}
-          </Link>
+          <Suspense fallback={<Skeleton className="h-9 w-40" />}>
+            <AuthSessionProvider>
+              <HeaderAuthActions
+                labels={{
+                  login: t("nav.login"),
+                  signup: t("nav.signup"),
+                  dashboard: t("nav.dashboard"),
+                }}
+              />
+            </AuthSessionProvider>
+          </Suspense>
         </div>
       </div>
     </header>
