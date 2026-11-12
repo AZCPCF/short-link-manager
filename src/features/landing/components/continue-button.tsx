@@ -3,12 +3,12 @@ import Link from "next/link";
 
 import { buttonVariants } from "@/components/ui/button";
 import { getLandingT } from "@/features/landing/get-t";
-import { auth } from "@/lib/auth/server";
+import { getOptionalUser } from "@/lib/auth/optional-user";
 
 export async function ContinueButton() {
   const t = await getLandingT();
-  const { data } = await auth.getSession();
-  const href = data?.user ? "/dashboard" : "/login";
+  const user = await getOptionalUser();
+  const href = user ? "/dashboard" : "/login";
 
   return (
     <Link href={href} className={buttonVariants({ size: "lg" })}>
