@@ -8,12 +8,9 @@ import { auth } from "@/lib/auth/server";
 
 const intlProxy = createIntlProxy(routing);
 
-const homeUrlFor = (locale: AppLocale): string => `/${locale}`;
-
-const authProxies: Record<AppLocale, ReturnType<typeof auth.middleware>> = {
-  en: auth.middleware({ loginUrl: homeUrlFor("en") }),
-  fa: auth.middleware({ loginUrl: homeUrlFor("fa") }),
-};
+// Only used to detect a session: the auth middleware answers with a redirect
+// when there is none. The target path is never followed.
+const sessionProbe = auth.middleware({ loginUrl: "/session-probe" });
 
 const isDashboardPath = (path: string): boolean =>
   path === "/dashboard" || path.startsWith("/dashboard/");
@@ -32,33 +29,35 @@ function parsePath(pathname: string): {
   return { locale: null, path: pathname };
 }
 
+function redirectTo(
+  request: NextRequest,
+  pathname: string,
+  cookies: string[],
+): NextResponse {
+  const response = NextResponse.redirect(new URL(pathname, request.url));
+  for (const cookie of cookies) response.headers.append("set-cookie", cookie);
+  return response;
+}
+
 export default async function proxy(request: NextRequest) {
   const { locale, path } = parsePath(request.nextUrl.pathname);
-  let authCookies: string[] = [];
+  let sessionCookies: string[] = [];
 
-  if (locale && isDashboardPath(path)) {
-    const authResponse = await authProxies[locale](request);
-    if (authResponse.headers.has("location")) return authResponse;
-    authCookies = authResponse.headers.getSetCookie();
-  }
+  if (locale && (isDashboardPath(path) || isAuthPagePath(path))) {
+    const probeResponse = await sessionProbe(request);
+    const signedIn = !probeResponse.headers.has("location");
+    sessionCookies = probeResponse.headers.getSetCookie();
 
-  if (locale && isAuthPagePath(path)) {
-    // The auth middleware redirects only unauthenticated requests,
-    // so a response without a redirect means the user is signed in.
-    const authResponse = await authProxies[locale](request);
-    if (!authResponse.headers.has("location")) {
-      const redirectResponse = NextResponse.redirect(
-        new URL(`/${locale}/dashboard`, request.url),
-      );
-      for (const cookie of authResponse.headers.getSetCookie()) {
-        redirectResponse.headers.append("set-cookie", cookie);
-      }
-      return redirectResponse;
+    if (isDashboardPath(path) && !signedIn) {
+      return redirectTo(request, `/${locale}`, sessionCookies);
+    }
+    if (isAuthPagePath(path) && signedIn) {
+      return redirectTo(request, `/${locale}/dashboard`, sessionCookies);
     }
   }
 
   const response = intlProxy(request);
-  for (const cookie of authCookies) {
+  for (const cookie of sessionCookies) {
     response.headers.append("set-cookie", cookie);
   }
   return response;
