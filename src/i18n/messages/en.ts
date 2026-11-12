@@ -27,6 +27,7 @@ const en = {
     close: "Close",
     tryAgain: "Try again",
     goHome: "Go home",
+    back: "Back",
   },
   LocaleSwitcher: {
     label: "Change language",

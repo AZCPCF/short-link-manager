@@ -29,6 +29,7 @@ const fa: Messages = {
     close: "بستن",
     tryAgain: "تلاش دوباره",
     goHome: "بازگشت به خانه",
+    back: "بازگشت",
   },
   LocaleSwitcher: {
     label: "تغییر زبان",
