@@ -136,6 +136,7 @@ const fa: Messages = {
     nav: {
       login: "ورود",
       signup: "ثبت‌نام",
+      dashboard: "داشبورد",
     },
     hero: {
       badge: "لینک کوتاه، آمار ساده",

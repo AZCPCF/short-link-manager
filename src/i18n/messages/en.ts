@@ -133,6 +133,7 @@ const en = {
     nav: {
       login: "Log in",
       signup: "Sign up",
+      dashboard: "Dashboard",
     },
     hero: {
       badge: "Short links, simple stats",
